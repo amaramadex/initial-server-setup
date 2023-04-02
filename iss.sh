@@ -43,7 +43,7 @@ echo -e "${GREEN}4. Do you want to add swap space? (yes/no)${NC}"
 read answer
 if [[ $answer == "yes" ]]; then
     if ! swapon --show | grep -q "swap"; then
-        echo -e "${WHITE}Enter the swap size in GB (just number without GB part):${NC}"
+        echo -e "${WHITE}Enter the swap size in GB (e.g. 1 - just a number):${NC}"
         read swap_size
         fallocate -l "${swap_size}G" /swapfile
         chmod 600 /swapfile
