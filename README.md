@@ -1,3 +1,1 @@
-# Simple Server Setup (sss.sh)
-# Made by Amadex.com
-Test 123
+# Simple Server Setup (sss.sh) by Amadex.com
