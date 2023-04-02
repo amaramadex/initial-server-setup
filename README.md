@@ -5,4 +5,4 @@ How to run?
     chmod +x iss.sh
     ./iss.sh
 
-What does this script? It helps you to change quicker hostname, timezone, add swap, enable/disable ipv6 (for now).
+What does this script? It helps you to change quicker hostname, timezone, ssh port, add swap, enable/disable ipv6 (for now).
