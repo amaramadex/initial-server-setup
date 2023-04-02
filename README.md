@@ -1,1 +1,1 @@
-# Simple Server Setup (sss.sh) by Amadex.com
+# Initial Server Setup (iss.sh) by Amadex.com
