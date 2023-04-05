@@ -8,10 +8,20 @@ WHITE='\033[1;37m'
 NC='\033[0m' # No Color
 
 clear
-echo -e "${ORANGE}Initial Server Setup (iss.sh) by Amadex.com${NC}"
-echo -e "${WHITE}Please make sure you are logged in as root to execute this script.${NC}"
+echo -e "${ORANGE}Initial Server Setup (iss.sh) by Amadex - https://www.amadex.com${NC}"
+echo -e "${ORANGE}Github: https://github.com/amaramadex/initial-server-setup${NC}"
+echo -e "${WHITE}Important: Please make sure you are logged in as root to execute this script!${NC}"
 
-# Question 1
+# Change root password
+echo -e "${GREEN}Do you want to change the root password? (yes/no)${NC}"
+read change_root_passwd
+if [[ $change_root_passwd == "yes" ]]; then
+    echo -e "${WHITE}Changing root password...${NC}"
+    passwd
+    echo -e "${YELLOW}Root password has been changed. Please remember the new password.${NC}"
+fi
+
+# Change hostname
 echo -e "${GREEN}1. Do you want to change hostname? (yes/no)${NC}"
 read answer
 if [[ $answer == "yes" ]]; then
@@ -20,7 +30,7 @@ if [[ $answer == "yes" ]]; then
     hostnamectl set-hostname "$new_hostname"
 fi
 
-# Question 2
+# Change timezone
 echo -e "${GREEN}2. Do you want to change timezone? (yes/no)${NC}"
 read answer
 if [[ $answer == "yes" ]]; then
@@ -29,7 +39,7 @@ if [[ $answer == "yes" ]]; then
     timedatectl set-timezone "$new_timezone"
 fi
 
-# Question 3
+# Change ssh port
 echo -e "${GREEN}3. Do you want to change ssh port? (yes/no)${NC}"
 read answer
 if [[ $answer == "yes" ]]; then
@@ -38,7 +48,7 @@ if [[ $answer == "yes" ]]; then
     sed -i "s/^#Port 22/Port $new_port/" /etc/ssh/sshd_config
 fi
 
-# Question 4
+# Add swap or check if there's swap already added
 echo -e "${GREEN}4. Do you want to add swap space? (yes/no)${NC}"
 read answer
 if [[ $answer == "yes" ]]; then
@@ -60,7 +70,7 @@ if [[ $answer == "yes" ]]; then
     fi
 fi
 
-# Question 5
+# Keep (if detected) or disable IPv6
 echo -e "${GREEN}5. Do you want to keep IPv6? (yes/no)${NC}"
 read answer
 if [[ $answer == "no" ]]; then
@@ -72,12 +82,34 @@ if [[ $answer == "no" ]]; then
     fi
 fi
 
-#
-
-# Question 6
-echo -e "${GREEN}6. Do you want to reboot the server to apply the changes? (yes/no)${NC}"
-read answer
-if [[ $answer == "yes" ]]; then
-    echo -e "${YELLOW}Server is rebooting...${NC}"
-    reboot
+# Install additional packages
+echo -e "${GREEN}Do you want to install nano, htop, curl, screen, and git? (yes/no)${NC}"
+read install_packages
+if [[ $install_packages == "yes" ]]; then
+    if command -v apt > /dev/null; then
+        apt update
+        apt install -y nano htop curl screen git
+    elif command -v dnf > /dev/null; then
+        dnf update -y
+        dnf install -y nano htop curl screen git
+    elif command -v yum > /dev/null; then
+        yum update -y
+        yum install -y nano htop curl screen git
+    elif command -v pacman > /dev/null; then
+        pacman -Syu --noconfirm
+        pacman -S --noconfirm nano htop curl screen git
+    else
+        echo -e "${YELLOW}No supported package manager (apt, dnf, yum, or pacman) detected. Unable to install additional packages.${NC}"
+    fi
 fi
+
+# Run YABS (Yet-Another-Bench-Script) by Mason Rowe - https://github.com/masonr/yet-another-bench-script
+echo -e "${GREEN}Do you want to run YABS (Yet-Another-Bench-Script) - (duration cca. 15 min.)? (yes/no)${NC}"
+read run_yabs
+if [[ $run_yabs == "yes" ]]; then
+    echo -e "${WHITE}Running YABS...${NC}"
+    wget -qO- yabs.sh | bash
+fi
+
+# Reboot
+echo -e "${GREEN}To apply the changes, please enter the ${YELLOW}'reboot'${GREEN} command after exiting this script. You can then log in with your kept or new password.${NC}"
