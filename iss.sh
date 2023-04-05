@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Colors
 ORANGE='\033[0;33m'
@@ -11,6 +11,12 @@ clear
 echo -e "${ORANGE}Initial Server Setup (iss.sh) by Amadex - https://www.amadex.com${NC}"
 echo -e "${ORANGE}Github: https://github.com/amaramadex/initial-server-setup${NC}"
 echo -e "${WHITE}Important: Please make sure you are logged in as root to execute this script!${NC}"
+
+# Check if logged in as root user
+if [ "$EUID" -ne 0 ]
+    then echo "Please run as root"
+    exit
+fi
 
 # Change root password
 echo -e "${GREEN}Do you want to change the root password? (yes/no)${NC}"
