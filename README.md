@@ -1,7 +1,7 @@
 # Initial Server Setup (iss.sh) by Amadex.com
 How to run?
 
-    curl -O https://www.amadex.com/iss.sh
+    wget https://www.amadex.com/iss.sh
     chmod +x iss.sh
     ./iss.sh
 
